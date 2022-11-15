@@ -16,6 +16,7 @@ limitations under the License.
 package v1alpha1
 
 import (
+	admissionv1alpha1 "k8s.io/api/admissionregistration/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -54,9 +55,10 @@ type Validation struct {
 }
 
 type Target struct {
-	Target string   `json:"target,omitempty"`
-	Rego   string   `json:"rego,omitempty"`
-	Libs   []string `json:"libs,omitempty"`
+	Target        string                                       `json:"target,omitempty"`
+	Rego          string                                       `json:"rego,omitempty"`
+	K8sValidation *admissionv1alpha1.ValidatingAdmissionPolicy `json:"k8sValidation,omitempty"`
+	Libs          []string                                     `json:"libs,omitempty"`
 }
 
 // CreateCRDError represents a single error caught during parsing, compiling, etc.

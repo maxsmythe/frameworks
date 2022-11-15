@@ -76,7 +76,7 @@ generate: generate-defaults
 		--input-dirs "./pkg/apis/templates/...,./pkg/apis/externaldata/..." \
 		--go-header-file=./hack/boilerplate.go.txt \
 		--output-file-base=zz_generated.conversion \
-		--extra-dirs=k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1
+		--extra-dirs=k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1,k8s.io/api/admissionregistration/v1alpha1
 
 CRD_SOURCE_FILE := deploy/crds.yaml
 FILE_STUB := "package schema\
@@ -91,7 +91,7 @@ YAML_CONSTANT_GOLANG_FILE := ./pkg/schema/yaml_constant.go
 constraint-template-string-constant: manifests
 	rm -rf $(YAML_CONSTANT_GOLANG_FILE)
 	bash -c 'echo -en ${FILE_STUB} >> ${YAML_CONSTANT_GOLANG_FILE}'
-	bash -c 'cat .staging/templatecrd/crd.yaml >> ${YAML_CONSTANT_GOLANG_FILE}'
+	bash -c 'cat .staging/templatecrd/crd.yaml | sed "s#\`#\` + \"\`\" + \`#g" >> ${YAML_CONSTANT_GOLANG_FILE}'
 	bash -c 'echo "\`" >> ${YAML_CONSTANT_GOLANG_FILE}'
 	# Remove trailing spaces.  Double $ is to prevent variable expansion in make
 	sed -i "s/ $$//g" ${YAML_CONSTANT_GOLANG_FILE}

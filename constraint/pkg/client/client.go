@@ -135,6 +135,8 @@ func (c *Client) AddTemplate(ctx context.Context, templ *templates.ConstraintTem
 		return resp, err
 	}
 
+	// TODO will need to handle multiple drivers here.
+	// edge case: switching drivers for a template.
 	if err := c.driver.AddTemplate(ctx, templ); err != nil {
 		return resp, err
 	}
